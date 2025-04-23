@@ -1,0 +1,25 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+# Import the necessary dataset 
+df = pd.read_csv("ObesityDataset.csv")
+print(df['Weight'])
+
+
+# Scale the data before applying PCA 
+scaling = StandardScaler()
+
+# Use fit and transform method 
+scaling.fit(df)
+scaled_data = scaling.transform(df)
+
+# Set the n_components to 3 
+principal=PCA(n_components=3)
+principal.fit(scaled_data)
+x=principal.transorm(scaled_data)
+
+# Check the dimensions of the data after PCA
+print(x.shape)
