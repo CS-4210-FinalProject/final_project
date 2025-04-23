@@ -13,13 +13,8 @@ import random
 n = [0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1.0]
 r = [True, False]
 
-df = pd.read_csv('CategoricalDataset.csv', sep=',', header=None) #reading the data by using Pandas library
+df = pd.read_csv('CategoricalDataset.csv', sep=',', header=1) #reading the data by using Pandas library
 
-X_training = np.array(df.values)[:,:64] #getting the first 64 fields to form the feature data for training
-y_training = np.array(df.values)[:,-1]  #getting the last field to form the class label for training
-
-X_test = np.array(df.values)[:,:64]    #getting the first 64 fields to form the feature data for test
-y_test = np.array(df.values)[:,-1]     #getting the last field to form the class label for test
 
 trainingDf = pd.DataFrame()
 testingDf = pd.DataFrame()
@@ -34,11 +29,13 @@ for i,row in df.iterrows():
             testingDf = pd.concat([testingDf, pd.DataFrame([row])], ignore_index=True)
 
 
-newXTrain = np.array(trainingDf.values)[:,:4] # choose the attrivutes
+newXTrain = np.array(trainingDf.values)[:,:16] # choose the attributes
 newYTrain = np.array(trainingDf.values)[:,-1] # choose the class (this should stay the same)
 print(newXTrain)
-newXTest = np.array(testingDf.values)[:,:4] # choose the attributes
+newXTest = np.array(testingDf.values)[:,:16] # choose the attributes
 newYTest = np.array(testingDf.values)[:,-1] # choose the class (this should stay the same)
+print(newXTest)
+
 
 maxPAcc  = -1
 maxMLPAcc = -1
@@ -77,7 +74,7 @@ for rate in n:
                 pred = clf.predict([x_testSample])
                 if pred[0] == y_testSample:
                     corrPred += 1
-            accuracy = corrPred/len(X_test)
+            accuracy = corrPred/len(newXTest)
 
 
             if algo == "perceptron": 

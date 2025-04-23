@@ -3,6 +3,7 @@ import pandas as pd
 df = pd.read_csv("ObesityDataset.csv")
 print(df.columns)
 
+df = df.dropna()
 # Ages range from 14-61 
 
 for i in range(len(df['Gender'])):
