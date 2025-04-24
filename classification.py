@@ -31,10 +31,8 @@ for i,row in df.iterrows():
 
 newXTrain = np.array(trainingDf.values)[:,:16] # choose the attributes
 newYTrain = np.array(trainingDf.values)[:,-1] # choose the class (this should stay the same)
-print(newXTrain)
 newXTest = np.array(testingDf.values)[:,:16] # choose the attributes
 newYTest = np.array(testingDf.values)[:,-1] # choose the class (this should stay the same)
-print(newXTest)
 
 
 maxPAcc  = -1
@@ -64,6 +62,7 @@ for rate in n:
                #print(f"Multi Layer Perceptron with parameters {rate}, {val}:", end = " ")
                maxAccuracy = maxMLPAcc
             #Fit the Neural Network to the training data
+            print(newXTrain, newYTrain)
             clf.fit(newXTrain, newYTrain)
 
             #make the classifier prediction for each test sample and start computing its accuracy
