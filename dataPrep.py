@@ -7,10 +7,6 @@ from sklearn.preprocessing import StandardScaler
 # Import the necessary dataset 
 df = pd.read_csv("ObesityDataset.csv")
 
-# BMI Formula (vikafitnessguide.com)
-df['BMI'] = df['Weight']/(df['Height']**2)
-print(df[['Weight', 'BMI']].round(2))
-
 # Now select only numeric columns for scaling
 df = df.select_dtypes(include=[np.number])
 
