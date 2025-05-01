@@ -114,7 +114,15 @@ for i in range(len(df['NObeyesdad'])):
         df.loc[i, 'NObeyesdad'] = 7
     print(df.loc[i, 'NObeyesdad'])
 
+
+# BMI Formula (vikafitnessguide.com)
+df['BMI'] = df['Weight']/(df['Height']**2)
+print(df[['Weight', 'BMI']].round(2))
+
+
+df = df.dropna()
 df.to_csv("CategoricalDataset.csv", index = False)
+
 
 # create an attribute for BMI (weight/height)
 print(df['Height'].max())
