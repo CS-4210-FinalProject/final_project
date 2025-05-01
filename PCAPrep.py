@@ -123,7 +123,3 @@ print(df[['Weight', 'BMI']].round(2))
 df = df.dropna()
 df.to_csv("CategoricalDataset.csv", index = False)
 
-
-# create an attribute for BMI (weight/height)
-print(df['Height'].max())
-print(df['Height'].min()) 
