@@ -116,6 +116,3 @@ for i in range(len(df['NObeyesdad'])):
 
 df.to_csv("CategoricalDataset.csv", index = False)
 
-# create an attribute for BMI (weight/height)
-print(df['Height'].max())
-print(df['Height'].min()) 
