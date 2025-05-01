@@ -21,9 +21,21 @@ for col in df.columns:
 rawX = df.drop('NObeyesdad', axis=1)
 rawY = df['NObeyesdad']
 
-#Encode categorical variables
+#For top 5
+#chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC']
+#For top 10
+#chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC', 'CAEC', 'SCC', 'CH20', 'Age', 'CALC']
+#For top 15
+chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC', 'CAEC', 'SCC', 'CH20', 'Age', 'CALC', 'NCP', 'MTRANS', 'FAF', 'TUE', 'SMOKE']
+
+#Encode categorical variables for all
+'''
 categorical = ['Gender', 'family_history_with_overweight', 'FAVC', 'CAEC', 'SMOKE', 'SCC', 'CALC', 'MTRANS']
 numerical = ['Age', 'Height', 'Weight', 'FCVC', 'NCP', 'CH2O', 'FAF', 'TUE']
+'''
+
+categorical = [col for col in chosen_features if col in ['Gender', 'family_history_with_overweight', 'FAVC', 'CAEC', 'SMOKE', 'SCC', 'CALC', 'MTRANS']]
+numerical = [col for col in chosen_features if col in ['Age', 'Height', 'Weight', 'FCVC', 'NCP', 'CH2O', 'FAF', 'TUE']]
 
 #Label the obesity levels
 le = LabelEncoder()
