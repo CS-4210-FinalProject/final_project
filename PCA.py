@@ -8,7 +8,6 @@ df = pd.read_csv("CategoricalDataset.csv")
 
 # Drop classification column 
 df = df.drop("NObeyesdad", axis=1)
-print(df.columns)
 
 # PCA cannot run with null values, drop them
 df1 = df.dropna()
@@ -19,37 +18,28 @@ scaling = StandardScaler()
 scaling.fit(df1)
 Scaled_data = scaling.transform(df1)
 
-# Set the n_component=3
-principal = PCA(n_components=3)
+# Set the n_component=1
+principal = PCA(n_components=1)
 principal.fit(Scaled_data)
 x=principal.transform(Scaled_data)
 
-# Check the shape of the data after PCA 
-print(x.shape)
-
 # Check the values of the eigen vectors produced by principal components
-print(principal.components_)
+print("Eigen vectors produced by principal components:\n",principal.components_)
+
+# Let's assume `df1.columns` holds the names of your original features.
+# Replace this with your actual column names.
+feature_names = df1.columns.tolist()
+
+# For each principal component, sort the features by the absolute value of their loadings
+for i, component in enumerate(np.array(principal.components_)):
+    sorted_idx = np.argsort(np.abs(component))[::-1]  # Sort in descending order of absolute value
+    sorted_features = [feature_names[idx] for idx in sorted_idx]
+    print(f"\nTop 5 Most meaningful features for Principal Component {i + 1}: {sorted_features[:5]}")  # Top 5 features
+    print(f"Top 10 Most meaningful features for Principal Component {i + 1}: {sorted_features[:10]}")  # Top 5 features
+    print(f"Top 15 Most meaningful features for Principal Component {i + 1}: {sorted_features[:15]}")  # Top 5 features
+    print(f"Ranking of meainingful features {i + 1}: {sorted_features[:10]}")  # Top 5 features
+
+# Each principal component represents a different direction of data variation, with the first component capturing the largest portion of the variance. Subsequent components capture progressively less variance, but still contribute to the overall explanation of the data. 
 
 
-plt.figure(figsize=(10,10))
-plt.scatter(x[:,0], x[:,1], c = df['NOObeyesdad'], cmap = 'plasma')
-
-# Scale
-# scaler = StandardScaler()
-# df_scaled = scaler.fit_transform(df1)
-
-# # Run PCA
-# pca = PCA(n_components=2) # 3 components would also deliver the same results 
-# df_pca = pca.fit_transform(df_scaled)
-
-# print(df_pca)
-# print(df.shape)
-# print(pca.components_)
-
-
-
-#y = df.loc[df.index, 'NObeyesdad']
-
-# plt.figure(figsize=(8,6))
-# scatter = plt.scatter(df_pca[:, 0], df_pca[:, 1], c = y, cmap = 'viridis', alpha = 0.7)
-# plt.show()
+# Features with higher absolute values contribute more to the principal component.
