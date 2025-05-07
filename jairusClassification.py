@@ -5,6 +5,11 @@ from sklearn.linear_model import Perceptron
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.neural_network import MLPClassifier
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 #Set Pandas option to not hide any columns
 pd.set_option('display.max_columns', None)
@@ -116,3 +121,99 @@ print("\nBrier Scores:")
 print(f"Training set: {train_brier:.4f}")
 print(f"Validation set: {val_brier:.4f}")
 print(f"Test set: {test_brier:.4f}")
+
+# Create DataFrame with predictions and probabilities
+results_df = pd.DataFrame({
+    'True_Label': le.inverse_transform(y_test),
+    'Perceptron_Prediction': le.inverse_transform(y_pred),
+    'MLP_Prediction': le.inverse_transform(y_pred_mlp)
+})
+proba_df = pd.DataFrame(y_test_proba, columns=[f'Prob_{cls}' for cls in le.classes_])
+results_df = pd.concat([results_df, proba_df], axis=1)
+
+# Save to CSV
+results_df.to_csv('test_set_predictions.csv', index=False)
+print("\nSaved test set predictions to 'test_set_predictions.csv'")
+
+# Confusion Matrices
+labels = sorted(results_df['True_Label'].unique())
+
+# Perceptron Confusion Matrix
+cm_perceptron = confusion_matrix(results_df['True_Label'], results_df['Perceptron_Prediction'], labels=labels)
+disp_perceptron = ConfusionMatrixDisplay(confusion_matrix=cm_perceptron, display_labels=labels)
+disp_perceptron.plot(xticks_rotation=45, cmap='Purples')
+plt.xticks(ticks=range(len(labels)), labels=labels, rotation=45)
+plt.title("Perceptron Confusion Matrix")
+plt.tight_layout()
+plt.show()
+
+# MLP Confusion Matrix
+cm_mlp = confusion_matrix(results_df['True_Label'], results_df['MLP_Prediction'], labels=labels)
+disp_mlp = ConfusionMatrixDisplay(confusion_matrix=cm_mlp, display_labels=labels)
+disp_mlp.plot(xticks_rotation=45, cmap='Blues')
+plt.xticks(ticks=range(len(labels)), labels=labels, rotation=45)
+plt.title("MLP Confusion Matrix")
+plt.tight_layout()
+plt.show()
+
+# PCA on class probabilities
+proba_cols = [col for col in results_df.columns if col.startswith('Prob_')]
+pca = PCA(n_components=2)
+pca_result = pca.fit_transform(results_df[proba_cols])
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(
+    x=pca_result[:, 0],
+    y=pca_result[:, 1],
+    hue=results_df['True_Label'],
+    style=results_df['MLP_Prediction'],
+    palette='Set2',
+    s=60
+)
+plt.title("PCA of MLP Prediction Probabilities")
+plt.xlabel("PCA 1")
+plt.ylabel("PCA 2")
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
+
+# PCA on the features from the test set (X_test) instead of the entire feature set (X)
+pca_features = PCA(n_components=2)
+pca_features_result = pca_features.fit_transform(X_test)  # Use X_test to match with test set predictions
+
+# Make sure to use the correct data for the hue and style parameters
+plt.figure(figsize=(8, 6))
+sns.scatterplot(
+    x=pca_features_result[:, 0],
+    y=pca_features_result[:, 1],
+    hue=le.inverse_transform(y_test),  # Use true labels from y_test
+    style=le.inverse_transform(y_pred_mlp),  # Use MLP predictions
+    palette='Set1',
+    s=60
+)
+plt.title("PCA of Features (Test Set)")
+plt.xlabel("PCA 1")
+plt.ylabel("PCA 2")
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
+
+# t-SNE on class probabilities
+tsne = TSNE(n_components=2, random_state=42, perplexity=30, n_iter=1000)
+tsne_result = tsne.fit_transform(results_df[proba_cols])
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(
+    x=tsne_result[:, 0],
+    y=tsne_result[:, 1],
+    hue=results_df['True_Label'],
+    style=results_df['MLP_Prediction'],
+    palette='Dark2',
+    s=60
+)
+plt.title("t-SNE of MLP Prediction Probabilities")
+plt.xlabel("t-SNE 1")
+plt.ylabel("t-SNE 2")
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
