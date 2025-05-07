@@ -24,9 +24,9 @@ rawY = df['NObeyesdad']
 #For top 5
 #chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC']
 #For top 10
-#chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC', 'CAEC', 'SCC', 'CH20', 'Age', 'CALC']
+chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC', 'CAEC', 'SCC', 'CH20', 'Age', 'CALC']
 #For top 15
-chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC', 'CAEC', 'SCC', 'CH20', 'Age', 'CALC', 'NCP', 'MTRANS', 'FAF', 'TUE', 'SMOKE']
+#chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC', 'CAEC', 'SCC', 'CH20', 'Age', 'CALC', 'NCP', 'MTRANS', 'FAF', 'TUE', 'SMOKE']
 
 #Encode categorical variables for all
 '''
