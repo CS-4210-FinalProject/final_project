@@ -8,7 +8,7 @@ import numpy as np
 
 #Set Pandas option to not hide any columns
 pd.set_option('display.max_columns', None)
-df = pd.read_csv('ObesityDataset.csv', sep=',', header=0) #reading the data by using Pandas library
+df = pd.read_csv('ObesityDataset1.csv', sep=',', header=0) #reading the data by using Pandas library
 
 #Checking to see how many unique values there are
 '''
@@ -22,11 +22,13 @@ rawX = df.drop('NObeyesdad', axis=1)
 rawY = df['NObeyesdad']
 
 #For top 5
-#chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC']
+chosen_features = ['Height', 'Weight', 'Gender', 'family_history_with_overweight', 'FAVC', 'CH2O', 'CAEC', 'SCC', 'NCP'] # ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC']
 #For top 10
-chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC', 'CAEC', 'SCC', 'CH20', 'Age', 'CALC']
+#chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC', 'CAEC', 'SCC', 'CH20', 'Age', 'CALC']
 #For top 15
 #chosen_features = ['Weight', 'Height', 'family_history_with_overweight', 'Gender', 'FAVC', 'CAEC', 'SCC', 'CH20', 'Age', 'CALC', 'NCP', 'MTRANS', 'FAF', 'TUE', 'SMOKE']
+# All features from ObesityDataset.csv
+
 
 #Encode categorical variables for all
 '''
